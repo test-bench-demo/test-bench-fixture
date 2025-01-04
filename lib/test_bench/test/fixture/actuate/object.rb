@@ -75,6 +75,8 @@ module TestBench
               false
             elsif target.const_get(:Fixture) == Fixture
               false
+            elsif target == ::Object
+              false
             else
               true
             end
