@@ -1,11 +1,11 @@
 # -*- encoding: utf-8 -*-
 Gem::Specification.new do |s|
-  s.name = 'TEMPLATE-GEM-NAME'
+  s.name = 'test_bench-fixture'
   s.version = '0.0.0.0'
   s.summary = "Some summary"
   s.description = ' '
-  s.homepage = 'TEMPLATE-HOMEPAGE'
-  s.license = 'TEMPLATE-LICENSE'
+  s.homepage = 'http://example.com'
+  s.license = 'MIT'
 
   s.authors = ['Brightworks Digital']
   s.email = 'development@brightworks.digital'
@@ -14,8 +14,7 @@ Gem::Specification.new do |s|
   s.platform = Gem::Platform::RUBY
 
   s.metadata['homepage_uri'] = s.homepage
-  s.metadata['source_code_uri'] = 'https://github.com/TEMPLATE-GITHUB-ORG/TEMPLATE-REPO-NAME'
-  s.metadata['allowed_push_host'] = ENV.fetch('RUBYGEMS_PRIVATE_AUTHORITY')
+  s.metadata['source_code_uri'] = 'https://github.com/test-bench-demo/test-bench-fixture'
 
   s.require_paths = %w(lib)
   s.bindir = 'executables'
