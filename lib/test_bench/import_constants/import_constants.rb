@@ -21,7 +21,10 @@ module TestBench
         target_namespace.const_set(alias_name, alias_module)
 
       else
-        source_namespace.constants.each do |constant_name|
+        inherit = false
+        constants = source_namespace.constants(inherit)
+
+        constants.each do |constant_name|
           constant = source_namespace.const_get(constant_name)
 
           if target_namespace.const_defined?(constant_name)
