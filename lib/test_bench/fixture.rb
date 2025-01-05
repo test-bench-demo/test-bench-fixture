@@ -23,5 +23,5 @@ end
 TestBench::ImportConstants.(TestBench)
 
 module TestBench
-  include Test
+  Fixture = Test::Fixture
 end
