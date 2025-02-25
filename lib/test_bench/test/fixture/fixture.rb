@@ -16,7 +16,7 @@ module TestBench
       def comment(heading=nil, text, indent: nil)
         text = text.to_str
         heading = heading&.to_str
-        indent_style = indent
+        indent_style = Fixture.indent_style(indent)
 
         test_session.comment(text, indent_style, heading)
       end
@@ -24,7 +24,7 @@ module TestBench
       def detail(heading=nil, text, indent: nil)
         text = text.to_str
         heading = heading&.to_str
-        indent_style = indent
+        indent_style = Fixture.indent_style(indent)
 
         test_session.detail(text, indent_style, heading)
       end
@@ -159,6 +159,14 @@ module TestBench
         else
           object = fixture_class_or_object
           Actuate::Object.(object, ...)
+        end
+      end
+
+      def self.indent_style(indent)
+        if not indent.nil?
+          indent.to_s.tr('_', '-')
+        else
+          indent
         end
       end
     end

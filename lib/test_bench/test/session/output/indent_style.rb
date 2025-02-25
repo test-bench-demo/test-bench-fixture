@@ -7,7 +7,7 @@ module TestBench
 
           extend self
 
-          def self.get(text, heading, indent_style=nil)
+          def self.get(text, heading=nil, indent_style=nil)
             assure_indent_style(indent_style, text, heading)
           end
 
@@ -45,23 +45,23 @@ module TestBench
           end
 
           def unstyled
-            :unstyled
+            'unstyled'
           end
 
           def first_line
-            :first_line
+            'first-line'
           end
 
           def quote
-            :quote
+            'quote'
           end
 
           def line_number
-            :line_number
+            'line-number'
           end
 
           def off
-            :off
+            'off'
           end
         end
       end

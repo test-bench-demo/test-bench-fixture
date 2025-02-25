@@ -96,11 +96,15 @@ module TestBench
         result
       end
 
-      def detail(text, indent_style, heading=nil)
+      def detail(text, indent_style=nil, heading=nil)
+        indent_style ||= Output::IndentStyle.get(text, heading, indent_style)
+
         record_event(Events::Detailed.new(text, heading, indent_style))
       end
 
-      def comment(text, indent_style, heading=nil)
+      def comment(text, indent_style=nil, heading=nil)
+        indent_style ||= Output::IndentStyle.get(text, heading, indent_style)
+
         record_event(Events::Commented.new(text, heading, indent_style))
       end
 
