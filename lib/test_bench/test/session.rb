@@ -14,5 +14,3 @@ require 'test_bench/test/session/get_output'
 require 'test_bench/test/session/substitute'
 require 'test_bench/test/session/substitute/path'
 require 'test_bench/test/session/substitute/sink'
-
-require 'test_bench/test/session/store'

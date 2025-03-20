@@ -4,6 +4,8 @@ module TestBench
       Failure = Class.new(RuntimeError)
       Abort = Class.new(Failure)
 
+      Error = Class.new(RuntimeError)
+
       def telemetry
         @telemetry ||= Test::Telemetry::Substitute.build
       end
@@ -25,46 +27,58 @@ module TestBench
       attr_writer :skip_sequence
 
       def self.build(&block)
+        block ||= proc { |telemetry|
+          Output.register(telemetry)
+        }
+
         instance = new
 
         Test::Telemetry.configure(instance)
 
-        if not block.nil?
-          block.(instance.telemetry)
-        end
+        telemetry = instance.telemetry
+        block.(telemetry)
 
         instance
       end
 
-      def self.configure(receiver, session: nil, attr_name: nil, &block)
-        session ||= Store.fetch
+      def self.instance
+        @instance ||= build
+      end
+      singleton_class.attr_writer :instance
+
+      def self.reestablish(&block)
+        if @instance.nil?
+          raise Error, "Session hasn't been established"
+        end
+
+        self.instance = build(&block)
+      end
+
+      def self.configure(receiver, session: nil, attr_name: nil)
+        session ||= instance
         attr_name ||= :session
 
         instance = session
         receiver.public_send(:"#{attr_name}=", instance)
       end
 
-      def inspect
-        text = self.to_s
-
-        instance_variables = self.instance_variables - [:@telemetry]
-
-        instance_variables.each_with_index do |name, index|
-          ivar_text = String.new
-
-          if index > 0
-            ivar_text << ','
-          end
-
-          value = instance_variable_get(name)
-          value = value.inspect
-
-          ivar_text << " #{name}=#{value}"
-
-          text.insert(-2, ivar_text)
+      def inspect(raw: nil)
+        if raw
+          return super()
         end
 
-        text
+        telemetry_placeholder = Struct.new(:inspect).new("(not inspected)")
+
+        original_telemetry = self.telemetry
+
+        self.telemetry = telemetry_placeholder
+
+        begin
+          super()
+
+        ensure
+          self.telemetry = original_telemetry
+        end
       end
 
       def passed?
