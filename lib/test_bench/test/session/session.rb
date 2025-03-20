@@ -84,7 +84,7 @@ module TestBench
       def passed?
         if failed?
           false
-        elsif asserted? && !skipped?
+        elsif not skipped?
           true
         else
           Session.unknown_result
@@ -131,7 +131,6 @@ module TestBench
 
       def context(title=nil, &block)
         if block.nil?
-          record_skip
           record_event(Events::ContextSkipped.new(title))
           return
         end
@@ -163,7 +162,6 @@ module TestBench
 
       def test(title=nil, &block)
         if block.nil?
-          record_skip
           record_event(Events::TestSkipped.new(title))
           return
         end
@@ -208,8 +206,6 @@ module TestBench
       def fail(message=nil)
         message ||= self.class.default_failure_message
 
-        record_failure
-
         record_event(Events::Failed.new(message))
 
         raise Failure, message
@@ -236,6 +232,13 @@ module TestBench
       end
 
       def record_event(event)
+        case event
+        when Events::TestSkipped, Events::ContextSkipped
+          record_skip
+        when Events::Failed
+          record_failure
+        end
+
         telemetry.record(event)
       end
 
