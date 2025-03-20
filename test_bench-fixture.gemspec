@@ -1,7 +1,7 @@
 # -*- encoding: utf-8 -*-
 Gem::Specification.new do |s|
   s.name = 'test_bench-fixture'
-  s.version = '0.0.0.9'
+  s.version = '0.0.0.10'
   s.summary = "Some summary"
   s.description = ' '
   s.homepage = 'http://example.com'
