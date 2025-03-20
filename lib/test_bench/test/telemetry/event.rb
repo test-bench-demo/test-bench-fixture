@@ -16,7 +16,10 @@ module TestBench
           cls.class_exec do
             extend EventType
             extend EventName
+
             extend Build
+
+            extend CaseEquality
           end
         end
 
@@ -80,6 +83,21 @@ module TestBench
             metadata = Metadata.new(process_id, time)
 
             new(*attributes, metadata)
+          end
+        end
+
+        module CaseEquality
+          def ===(object)
+            if object.is_a?(EventData)
+              event_data = object
+
+              type = event_data.type
+
+              type == self.event_type
+
+            elsif object.instance_of?(self)
+              true
+            end
           end
         end
 
