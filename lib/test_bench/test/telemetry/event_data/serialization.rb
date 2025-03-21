@@ -81,7 +81,7 @@ module TestBench
                 second = %r{(?<second>[[:digit:]]{2})}
                 nanosecond = %r{(?<nanosecond>[[:digit:]]{9})}
 
-                %r{#{year}-#{month}-#{day}T#{hour}:#{minute}:#{second}\.#{nanosecond}Z}
+                %r{\A#{year}-#{month}-#{day}T#{hour}:#{minute}:#{second}\.#{nanosecond}Z\z}
               end
           end
         end
