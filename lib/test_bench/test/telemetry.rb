@@ -1,3 +1,5 @@
+require 'json'
+
 require 'test_bench/pseudorandom'
 
 require 'test_bench/test/telemetry/event_data'
