@@ -21,11 +21,7 @@ module TestBench
               newline_terminated = text.match?(/\R\z/)
 
               if newline_terminated
-                if heading.nil?
-                  unstyled
-                else
-                  quote
-                end
+                unstyled
               else
                 first_line
               end
