@@ -252,7 +252,7 @@ module TestBench
             return
           end
 
-          indent_style = IndentStyle.get(text, heading, indent_style)
+          indent_style = indent_style(text, heading, indent_style)
 
           text_lines = text.lines(chomp: true)
 
@@ -362,8 +362,8 @@ module TestBench
           Detail.detail?(detail_policy, mode)
         end
 
-        def indent_style(text, heading, indent_style=nil)
-          IndentStyle.get(text, heading, indent_style)
+        def indent_style(text, heading=nil, indent_style=nil)
+          IndentStyle.get(text, heading:, indent_style:)
         end
 
         module Mode

@@ -18,7 +18,7 @@ module TestBench
         heading = heading&.to_str
         indent_style = Fixture.indent_style(indent)
 
-        test_session.comment(text, indent_style, heading)
+        test_session.comment(heading, text, indent_style:)
       end
 
       def detail(heading=nil, text, indent: nil)
@@ -26,7 +26,7 @@ module TestBench
         heading = heading&.to_str
         indent_style = Fixture.indent_style(indent)
 
-        test_session.detail(text, indent_style, heading)
+        test_session.detail(heading, text, indent_style:)
       end
 
       def assert(result)

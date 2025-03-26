@@ -7,11 +7,11 @@ module TestBench
 
           extend self
 
-          def self.get(text, heading=nil, indent_style=nil)
-            assure_indent_style(indent_style, text, heading)
+          def self.get(text, heading: nil, indent_style: nil)
+            assure_indent_style(indent_style, text:, heading:)
           end
 
-          def self.assure_indent_style(indent_style, text=nil, heading=nil)
+          def self.assure_indent_style(indent_style, text: nil, heading: nil)
             text ||= ''
 
             case indent_style
