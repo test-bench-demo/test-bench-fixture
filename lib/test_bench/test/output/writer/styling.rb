@@ -38,17 +38,10 @@ module TestBench
 
           def self.default
             policy = ENV.fetch('TEST_OUTPUT_STYLING') do
-              ## Remove when no longer needed - Nathan, Sat Sep 7 2024
-              ENV.fetch('TEST_BENCH_OUTPUT_STYLING') do
-                return default!
-              end
+              return detect
             end
 
             policy.to_sym
-          end
-
-          def self.default!
-            :detect
           end
         end
       end

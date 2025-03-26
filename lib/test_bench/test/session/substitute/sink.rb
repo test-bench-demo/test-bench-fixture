@@ -17,16 +17,14 @@ module TestBench
           attr_writer :path
 
           def receive(event_data)
-            event_type = event_data.type
-
-            case event_type
-            when :TestStarted, :ContextStarted
+            case event_data
+            when TestStarted, ContextStarted
               title, * = event_data.data
               if not title.nil?
                 path.push(title)
               end
 
-            when :TestFinished, :ContextFinished
+            when TestFinished, ContextFinished
               title, * = event_data.data
               if not title.nil?
                 path.pop(title)
@@ -36,14 +34,14 @@ module TestBench
             record = Record.new(event_data)
             path.copy(record)
 
-            case event_type
-            when :TestFinished, :ContextFinished
+            case event_data
+            when TestFinished, ContextFinished
               title, * = event_data.data
               if not title.nil?
                 record.path.push(title)
               end
 
-            when :Commented, :Detailed
+            when Commented, Detailed
               comment_text, * = event_data.data
               record.path.push(comment_text)
             end

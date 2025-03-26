@@ -88,15 +88,14 @@ module TestBench
 
         module CaseEquality
           def ===(object)
-            if object.is_a?(EventData)
-              event_data = object
-
+            case object
+            in EventData => event_data
               type = event_data.type
 
               type == self.event_type
 
-            elsif object.instance_of?(self)
-              true
+            else
+              super(object)
             end
           end
         end

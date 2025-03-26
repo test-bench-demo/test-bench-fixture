@@ -11,7 +11,6 @@ require 'test_bench/test/telemetry/sink'
 require 'test_bench/test/telemetry/sink/file'
 require 'test_bench/test/telemetry/sink/handler/event_registry'
 require 'test_bench/test/telemetry/sink/handler'
-require 'test_bench/test/telemetry/sink/projection'
 
 require 'test_bench/test/telemetry/telemetry'
 

@@ -42,17 +42,10 @@ module TestBench
 
           def self.default
             policy = ENV.fetch('TEST_DETAIL') do
-              ## Remove when no longer needed - Nathan, Sat Sep 7 2024
-              ENV.fetch('TEST_BENCH_DETAIL') do
-                return default!
-              end
+              return failure
             end
 
             policy.to_sym
-          end
-
-          def self.default!
-            :failure
           end
         end
       end

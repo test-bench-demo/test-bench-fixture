@@ -21,7 +21,7 @@ module TestBench
               newline_terminated = text.match?(/\R\z/)
 
               if newline_terminated
-                unstyled
+                block
               else
                 first_line
               end
@@ -32,28 +32,23 @@ module TestBench
 
           def indent_styles
             [
-              unstyled,
-              first_line,
-              quote,
+              block,
               line_number,
+              first_line,
               off
             ]
           end
 
-          def unstyled
-            'unstyled'
-          end
-
-          def first_line
-            'first-line'
-          end
-
-          def quote
-            'quote'
+          def block
+            'block'
           end
 
           def line_number
             'line-number'
+          end
+
+          def first_line
+            'first-line'
           end
 
           def off

@@ -30,10 +30,10 @@ module TestBench
         instance.hexdigest
       end
 
-      def self.file(path)
+      def self.file(file_path)
         instance = new
 
-        File.open(path, 'r') do |io|
+        File.open(file_path, 'r') do |io|
           until io.eof?
             text = io.read
             instance.update(text)

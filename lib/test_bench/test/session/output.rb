@@ -234,7 +234,7 @@ module TestBench
           if not heading.nil?
             writer.
               indent.
-              style(:bold, :underline).
+              style(:bold).
               puts(heading)
 
             if not writer.styling?
@@ -256,21 +256,6 @@ module TestBench
 
           text_lines = text.lines(chomp: true)
 
-          case indent_style
-          when IndentStyle.quote
-            get_marker = proc { '> ' }
-          when IndentStyle.line_number
-            line_number_width = text_lines.count.to_s.length
-            marker_width = line_number_width + 2
-
-            get_marker = proc { |line_number|
-              "#{line_number}.".ljust(marker_width)
-            }
-
-          else
-            get_marker = proc { '' }
-          end
-
           text_lines.each.with_index(1) do |text_line, line_number|
             if not indent_style == IndentStyle.off
               if line_number == 1 || indent_style != IndentStyle.first_line
@@ -278,11 +263,26 @@ module TestBench
               end
             end
 
-            marker = get_marker.(line_number)
-            if not marker.empty?
+            case indent_style
+            when IndentStyle.block
+              if writer.styling?
+                writer.
+                  style(:white_bg).
+                  print(' ').
+                  style(:reset_bg).
+                  print(' ')
+              else
+                writer.print('> ')
+              end
+            when IndentStyle.line_number
+              line_number_width = text_lines.count.to_s.length
+              marker_width = line_number_width + 2
+
+              line_marker = "#{line_number}.".ljust(marker_width)
+
               writer.
                 style(:faint).
-                print(marker).
+                print(line_marker).
                 style(:reset_intensity)
             end
 
