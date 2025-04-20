@@ -46,22 +46,16 @@ module TestBench
         iterator.next.unpack1('D')
       end
 
-      def reset(namespace=nil)
-        self.iterator = Iterator.build(seed, namespace)
+      def reset
+        self.iterator = Iterator.build(seed)
       end
 
-      def reset?(namespace=nil)
+      def reset?
         if iterator.iterated?
           false
-        elsif namespace.nil?
-          true
         else
-          iterator.namespace?(namespace)
+          true
         end
-      end
-
-      def namespace?(namespace)
-        iterator.namespace?(namespace)
       end
     end
   end

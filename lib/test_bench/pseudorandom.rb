@@ -1,5 +1,3 @@
-require 'test_bench/digest/hash'
-
 require 'test_bench/pseudorandom/defaults'
 
 require 'test_bench/pseudorandom/iterator'

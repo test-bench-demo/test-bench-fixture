@@ -2,8 +2,8 @@ module TestBench
   module Pseudorandom
     extend self
 
-    def reset(namespace=nil)
-      Generator.instance.reset(namespace)
+    def reset
+      Generator.instance.reset
     end
 
     def string

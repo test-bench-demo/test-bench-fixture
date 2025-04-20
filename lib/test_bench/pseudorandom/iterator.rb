@@ -2,7 +2,6 @@ module TestBench
   module Pseudorandom
     class Iterator
       attr_accessor :seed
-      attr_accessor :namespace
 
       def iterations
         @iterations ||= 0
@@ -15,30 +14,18 @@ module TestBench
         @random = random
       end
 
-      def self.build(seed, namespace=nil)
-        random = self.random(seed, namespace)
+      def self.build(seed)
+        random = self.random(seed)
 
         instance = new(random)
         instance.seed = seed
-        instance.namespace = namespace
         instance
       end
 
-      def self.random(seed, namespace)
+      def self.random(seed)
         random_seed = seed.to_i(36)
 
-        if not namespace.nil?
-          namespace_hash = namespace_hash(namespace)
-          random_seed ^= namespace_hash
-        end
-
         ::Random.new(random_seed)
-      end
-
-      def self.namespace_hash(namespace)
-        namespace_digest = Digest::Hash.digest(namespace)
-
-        namespace_digest.unpack1('Q>')
       end
 
       def next
@@ -47,26 +34,18 @@ module TestBench
         random.bytes(8)
       end
 
-      def namespace?(namespace)
-        source?(self.seed, namespace)
-      end
-
       def seed?(seed)
-        source?(seed, self.namespace)
-      end
-
-      def iterated?
-        iterations > 0
-      end
-
-      def source?(seed, namespace=nil)
         control_random = ::Random.new(random.seed)
-        compare_random = Iterator.random(seed, namespace)
+        compare_random = Iterator.random(seed)
 
         control_value = control_random.rand
         compare_value = compare_random.rand
 
         control_value == compare_value
+      end
+
+      def iterated?
+        iterations > 0
       end
     end
   end
