@@ -60,7 +60,11 @@ module TestBench
           end
 
           def write(text)
-            raw_device.write(text)
+            if not buffering?
+              raw_device.write(text)
+            else
+              buffer << text
+            end
 
             text.bytesize
           end
