@@ -528,7 +528,7 @@ module TestBench
 
         module Defaults
           def self.detail_policy
-            env_var_value = ENV.fetch('TEST_DETAIL', 'failure')
+            env_var_value = ENV.fetch('TEST_OUTPUT_DETAIL', 'failure')
 
             detail_policy = env_var_value.to_sym
 
@@ -540,7 +540,7 @@ module TestBench
           def self.output_level
             env_var_value = ENV.fetch('TEST_OUTPUT_LEVEL', 'all')
 
-            output_level = env_var_value.to_sym
+            output_level = env_var_value.gsub('-', '_').to_sym
 
             Level.assure_output_level(output_level)
 

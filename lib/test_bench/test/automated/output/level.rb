@@ -13,8 +13,8 @@ module TestBench
             :failure
           end
 
-          def self.not_passed
-            :not_passed
+          def self.not_passing
+            :not_passing
           end
 
           def self.all
@@ -34,7 +34,7 @@ module TestBench
                 Session::Result.failed
               ].include?(result)
 
-            when not_passed
+            when not_passing
               result != Session::Result.passed
 
             when all
