@@ -21,5 +21,5 @@ end
 TestBench::ImportConstants.(TestBench)
 
 module TestBench
-  include Test
+  include Test::Automated
 end
