@@ -72,8 +72,10 @@ module TestBench
               while file_path = file_path_reader.gets(chomp: true)
                 pending_event = Isolated.build(file_path)
 
+                absolute_file_path = ::File.expand_path(file_path)
+
                 session.evaluate(pending_event) do
-                  load(file_path)
+                  load(absolute_file_path)
                 end
               end
             end
