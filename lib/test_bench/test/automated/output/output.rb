@@ -455,7 +455,7 @@ module TestBench
           end
 
           file = file_queued.file
-          writer.print("Ran #{file}")
+          writer.print("Running #{file}")
 
           if !writer.styling? && status.result == Session::Result.aborted
             writer.print(" (aborted)")
@@ -465,16 +465,35 @@ module TestBench
         end
 
         def resolve_file_executed(file_executed)
+          indented = writer.indentation_depth > 0
+
           result = file_executed.result
 
-          if result == Result.none
+          if indented
+            file = file_executed.file
+
             writer.
               indent.
-              style(:faint, :italic).
-              puts("(no tests)")
-          end
+              style(:italic).
+              print("Ran #{file}")
 
-          writer.puts
+            if result == Result.none
+              writer.
+                print(' ').
+                style(:faint).
+                print("(no tests)")
+            end
+
+            writer.puts
+          else
+            if result == Result.none
+              writer.
+                style(:faint, :italic).
+                puts("(no tests)")
+            end
+
+            writer.puts
+          end
         end
 
         def resolve_file_not_found(file_not_found)
