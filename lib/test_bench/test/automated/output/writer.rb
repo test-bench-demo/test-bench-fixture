@@ -3,10 +3,25 @@ module TestBench
     module Automated
       class Output
         class Writer
+          Error = Class.new(RuntimeError)
+
           def device
             @device ||= Device::Substitute.build
           end
           attr_writer :device
+
+          attr_accessor :original_device
+          alias :set_original_device :original_device=
+
+          attr_accessor :buffering
+          def buffering?
+            buffering ? true : false
+          end
+
+          def buffered_text
+            @buffered_text ||= String.new
+          end
+          attr_writer :buffered_text
 
           attr_accessor :styling
           alias :styling? :styling
@@ -93,7 +108,57 @@ module TestBench
             self
           end
 
+          def restore
+            if not detached?
+              raise Error, "Not detached"
+            end
+
+            self.device = original_device
+            self.original_device = nil
+
+            disable_buffering
+          end
+
+          def detach(enable_buffering=nil)
+            enable_buffering ||= false
+
+            if detached?
+              raise Error, "Already detached"
+            end
+
+            self.original_device = device
+            self.device = Device::Null.instance
+
+            if enable_buffering
+              self.enable_buffering
+            end
+          end
+
+          def detached?
+            not original_device.nil?
+          end
+
           def write(text)
+            if buffering?
+              buffered_text << text
+            else
+              write!(text)
+            end
+          end
+
+          def enable_buffering
+            self.buffering = true
+          end
+
+          def disable_buffering
+            self.buffering = false
+
+            write!(buffered_text)
+
+            buffered_text.clear
+          end
+
+          def write!(text)
             device.write(text)
           end
 

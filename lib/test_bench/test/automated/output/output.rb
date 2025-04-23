@@ -24,6 +24,11 @@ module TestBench
         end
         attr_writer :output_level
 
+        def files_queued
+          @files_queued ||= 0
+        end
+        attr_writer :files_queued
+
         def branches
           @branches ||= []
         end
@@ -166,7 +171,7 @@ module TestBench
           in ContextFinished => context_finished
             resolve_context_finished(context_finished, status)
           in FileQueued => file_queued
-            resolve_file_queued(file_queued)
+            resolve_file_queued(file_queued, status)
           in FileExecuted => file_executed
             resolve_file_executed(file_executed)
           in FileNotFound => file_not_found
@@ -443,35 +448,54 @@ module TestBench
           end
         end
 
-        def resolve_file_queued(file_queued)
+        def resolve_file_queued(file_queued, status)
+          self.files_queued += 1
+
+          if files_queued == 1
+            if Level.output?(output_level, status.result)
+              buffer = true
+            else
+              buffer = false
+            end
+
+            writer.detach(buffer)
+          end
+
+          writer.indent
+
+          if status.result == Session::Result.aborted
+            writer.style(:bold, :red)
+          end
+
           file = file_queued.file
+          writer.print("Ran #{file}")
 
-          writer.device.sync = false
+          if !writer.styling? && status.result == Session::Result.aborted
+            writer.print(" (aborted)")
+          end
 
-          writer.puts("Ran #{file}")
+          writer.puts
         end
 
         def resolve_file_executed(file_executed)
           result = file_executed.result
 
-          if not Level.output?(output_level, result)
-            original_device = writer.device
-
-            writer.device = Device::Null.instance
-          end
-
           if result == Result.none
             writer.
+              indent.
               style(:faint, :italic).
               puts("(no tests)")
           end
 
           writer.puts
 
-          writer.device.sync = true
+          self.files_queued = [
+            0,
+            files_queued - 1
+          ].max
 
-          if not original_device.nil?
-            writer.device = original_device
+          if files_queued.zero?
+            writer.restore
           end
         end
 
