@@ -24,11 +24,6 @@ module TestBench
         end
         attr_writer :output_level
 
-        def files_queued
-          @files_queued ||= 0
-        end
-        attr_writer :files_queued
-
         def branches
           @branches ||= []
         end
@@ -114,6 +109,10 @@ module TestBench
           merge_branch = branches.pop
 
           if root?
+            if not Level.output?(output_level, merge_branch.status.result)
+              return
+            end
+
             merge_branch.each do |event, status|
               resolve(event, status)
             end
@@ -449,18 +448,6 @@ module TestBench
         end
 
         def resolve_file_queued(file_queued, status)
-          self.files_queued += 1
-
-          if files_queued == 1
-            if Level.output?(output_level, status.result)
-              buffer = true
-            else
-              buffer = false
-            end
-
-            writer.detach(buffer)
-          end
-
           writer.indent
 
           if status.result == Session::Result.aborted
@@ -488,15 +475,6 @@ module TestBench
           end
 
           writer.puts
-
-          self.files_queued = [
-            0,
-            files_queued - 1
-          ].max
-
-          if files_queued.zero?
-            writer.restore
-          end
         end
 
         def resolve_file_not_found(file_not_found)
