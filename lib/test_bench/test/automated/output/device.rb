@@ -10,16 +10,6 @@ module TestBench
           end
           attr_writer :raw_device
 
-          def buffering
-            @buffering.nil? ? @buffering = false : @buffering
-          end
-          attr_writer :buffering
-          alias :buffering? :buffering
-
-          def buffer
-            @buffer ||= String.new
-          end
-
           def self.build(target_device=nil)
             target_device ||= Defaults.target_device
 
@@ -60,31 +50,13 @@ module TestBench
           end
 
           def write(text)
-            if not buffering?
-              raw_device.write(text)
-            else
-              buffer << text
-            end
+            raw_device.write(text)
 
             text.bytesize
           end
 
           def tty?
             raw_device.tty?
-          end
-
-          def sync=(sync)
-            self.buffering = !sync
-
-            if not buffering?
-              raw_device.write(buffer)
-
-              buffer.clear
-            end
-          end
-
-          def sync
-            !buffering?
           end
 
           module Defaults

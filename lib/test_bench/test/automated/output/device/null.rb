@@ -15,13 +15,6 @@ module TestBench
             def tty?
               false
             end
-
-            def sync
-              true
-            end
-
-            def sync=(_sync)
-            end
           end
         end
       end

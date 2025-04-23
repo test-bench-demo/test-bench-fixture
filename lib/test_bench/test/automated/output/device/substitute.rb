@@ -14,25 +14,13 @@ module TestBench
               end
               attr_writer :written_text
 
-              attr_accessor :buffering
-
-              def buffering?
-                buffering ? true : false
-              end
-
-              attr_accessor :flushed
-
-              def flushed?
-                flushed ? true : false
-              end
-
               attr_accessor :tty
 
               def tty?
                 tty ? true : false
               end
 
-              def tty!
+              def set_tty
                 self.tty = true
               end
 
@@ -51,19 +39,6 @@ module TestBench
                   written_text == text
                 end
               end
-
-              def sync
-                !buffering?
-              end
-
-              def set_sync(sync)
-                if buffering?
-                  self.flushed = true
-                end
-
-                self.buffering = !sync
-              end
-              alias :sync= :set_sync
             end
           end
         end
