@@ -11,6 +11,11 @@ module TestBench
         end
         attr_writer :telemetry
 
+        def filter_backtrace
+          @filter_backtrace ||= Exception::FilterBacktrace::Substitute.build
+        end
+        attr_writer :filter_backtrace
+
         def isolate
           @isolate ||= Isolate::Substitute.build
         end
@@ -35,6 +40,7 @@ module TestBench
           instance = new
 
           Telemetry.configure(instance)
+          Exception::FilterBacktrace.configure(instance)
           Isolate.configure(instance)
 
           instance
@@ -206,10 +212,12 @@ module TestBench
           message = failure.message
           record_event(Events::Failed.build(message))
 
-        rescue Exception => exception
+        rescue ::Exception => exception
           aborted_recorded = status.error_sequence > previous_status.error_sequence
 
           if not aborted_recorded
+            filter_backtrace.(exception)
+
             message = exception.detailed_message
             record_event(Events::Aborted.build(message))
           end

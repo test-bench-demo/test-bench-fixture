@@ -6,7 +6,9 @@ module TestBench
           extend self
 
           def self.resolve(result, strict: nil)
-            strict ||= Defaults.strict
+            if strict.nil?
+              strict = Defaults.strict
+            end
 
             case result
             in "passed"

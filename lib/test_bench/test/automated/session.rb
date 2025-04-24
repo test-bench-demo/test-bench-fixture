@@ -4,6 +4,9 @@ require 'test_bench/test/automated/session/defaults'
 
 require 'test_bench/test/automated/session/result'
 
+require 'test_bench/test/automated/session/exception/filter_backtrace'
+require 'test_bench/test/automated/session/exception/filter_backtrace/substitute'
+
 require 'test_bench/test/automated/session/events'
 
 require 'test_bench/test/automated/session/trace'
