@@ -8,6 +8,11 @@ module TestBench
           end
           attr_writer :subprocess_sequence
 
+          def apex_directory
+            @apex_directory ||= ::Dir.pwd
+          end
+          attr_writer :apex_directory
+
           attr_accessor :subprocess_id
 
           attr_accessor :telemetry_reader
@@ -61,6 +66,8 @@ module TestBench
             subprocess_id = fork do
               file_path_writer.close
               telemetry_reader.close
+
+              ::Dir.chdir(apex_directory)
 
               session = Session.build
 
