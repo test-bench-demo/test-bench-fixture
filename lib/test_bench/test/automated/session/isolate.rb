@@ -91,6 +91,11 @@ module TestBench
                   load(absolute_file_path)
                 end
               end
+
+            ensure
+              # Ensure any exception raised by the subprocess is likely to be printed after the session's test output
+              one_millisecond = 0.001
+              sleep(one_millisecond)
             end
 
             telemetry_writer.close
