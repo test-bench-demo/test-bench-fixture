@@ -20,10 +20,19 @@ module TestBench
               attr_writer :events
               alias :set_events :events=
 
+              attr_accessor :stopped
+              def stopped?
+                stopped ? true : false
+              end
+
               def call(file_path, &block)
                 file_paths << file_path
 
                 events.each(&block)
+              end
+
+              def stop
+                self.stopped = true
               end
 
               def executed?(file_path)

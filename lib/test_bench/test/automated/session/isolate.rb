@@ -32,7 +32,11 @@ module TestBench
           end
 
           def call(file_path, &probe)
-            if subprocess_id.nil?
+            case status
+            when Status.stopping
+              stop
+              start
+            when Status.stopped
               start
             end
 
@@ -48,7 +52,7 @@ module TestBench
 
                 if executed_file_path == file_path
                   if result == Result.aborted
-                    stop
+                    stop!
                   end
 
                   break
@@ -102,8 +106,7 @@ module TestBench
           end
 
           def stop
-            telemetry_reader.close
-            file_path_writer.close
+            stop!
 
             subprocess_status = ::Process::Status.wait(subprocess_id)
 
@@ -112,7 +115,36 @@ module TestBench
             subprocess_status.exitstatus
           end
 
+          def stop!
+            telemetry_reader.close
+            file_path_writer.close
+          end
+
+          def status
+            if subprocess_id.nil?
+              Status.stopped
+            elsif telemetry_reader.closed? && file_path_writer.closed?
+              Status.stopping
+            else
+              Status.active
+            end
+          end
+
           Isolated = Telemetry::Event.define(:file, :result)
+
+          module Status
+            def self.active
+              :active
+            end
+
+            def self.stopping
+              :stopping
+            end
+
+            def self.stopped
+              :stopped
+            end
+          end
         end
       end
     end
