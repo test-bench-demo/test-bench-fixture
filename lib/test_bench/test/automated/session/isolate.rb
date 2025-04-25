@@ -18,14 +18,16 @@ module TestBench
           attr_accessor :telemetry_reader
           attr_accessor :file_path_writer
 
-          def self.build
-            new
+          def self.build(apex_directory: nil)
+            instance = new
+            instance.apex_directory = apex_directory
+            instance
           end
 
-          def self.configure(receiver, attr_name: nil)
+          def self.configure(receiver, apex_directory: nil, attr_name: nil)
             attr_name ||= :isolate
 
-            instance = build
+            instance = build(apex_directory:)
             receiver.public_send(:"#{attr_name}=", instance)
           end
 
