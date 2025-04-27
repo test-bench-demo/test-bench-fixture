@@ -121,8 +121,8 @@ module TestBench
           end
 
           def stop!
-            telemetry_reader.close
-            file_path_writer.close
+            telemetry_reader&.close
+            file_path_writer&.close
           end
 
           def status
