@@ -113,6 +113,10 @@ module TestBench
           def stop
             stop!
 
+            if subprocess_id.nil?
+              return nil
+            end
+
             subprocess_status = ::Process::Status.wait(subprocess_id)
 
             self.subprocess_id = nil
