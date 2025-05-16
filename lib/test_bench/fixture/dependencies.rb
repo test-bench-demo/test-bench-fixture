@@ -1,0 +1,6 @@
+require 'test_bench/fixture/dependencies/import_constants/macro'
+require 'test_bench/fixture/dependencies/import_constants'
+require 'test_bench/fixture/dependencies/pseudorandom/defaults'
+require 'test_bench/fixture/dependencies/pseudorandom/iterator'
+require 'test_bench/fixture/dependencies/pseudorandom/generator'
+require 'test_bench/fixture/dependencies/pseudorandom'
